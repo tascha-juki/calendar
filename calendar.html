@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .calendar-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            width: 300px; /* Можно менять ширину */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            user-select: none;
+            color: #333;
+            transition: background 0.3s;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .calendar-header button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+            padding: 0 8px;
+        }
+        .calendar-header button:hover {
+            color: #000;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            gap: 2px;
+        }
+        .day {
+            padding: 6px 0;
+            font-size: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .day:hover {
+            background: #e0e0e0;
+        }
+        .day.empty {
+            cursor: default;
+            color: transparent;
+        }
+        .day.today {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .day.selected {
+            background: #0056b3;
+            color: white;
+        }
+        /* Цветовые темы */
+        .theme-blue { background: #f0f7ff; }
+        .theme-green { background: #f0fff4; }
+        .theme-pink { background: #fff0f5; }
+        .theme-yellow { background: #fffff0; }
+    </style>
+</head>
+<body>
+
+<div class="calendar-container theme-blue" id="calendar">
+    <div class="calendar-header">
+        <button id="prevMonth">◀</button>
+        <span id="monthYear">Октябрь 2026</span>
+        <button id="nextMonth">▶</button>
+    </div>
+    <div class="weekdays">
+        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+    </div>
+    <div class="days" id="daysGrid"></div>
+    <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 5px;">
+            <button onclick="changeTheme('theme-blue')" style="background:#007bff; border:none; width:16px; height:16px; border-radius:50%; cursor:pointer;"></button>
+            <button onclick="changeTheme('theme-green')" style="background:#28a745; border:none; width:16px; height:16px; border-radius:50%; cursor:pointer;"></button>
+            <button onclick="changeTheme('theme-pink')" style="background:#e83e8c; border:none; width:16px; height:16px; border-radius:50%; cursor:pointer;"></button>
+            <button onclick="changeTheme('theme-yellow')" style="background:#ffc107; border:none; width:16px; height:16px; border-radius:50%; cursor:pointer;"></button>
+        </div>
+        <span style="font-size: 12px; color: #aaa;">Buildin.AI</span>
+    </div>
+</div>
+
+<script>
+    let currentDate = new Date(2026, 9, 3); // Октябрь 2026 (месяцы с 0)
+
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        // Название месяца и года
+        const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+        document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
+
+        // Первый день месяца
+        const firstDay = new Date(year, month, 1).getDay(); // 0 = Вс, 1 = Пн
+        // Корректировка для начала недели с Пн
+        const startDay = (firstDay === 0) ? 6 : firstDay - 1;
+        
+        // Количество дней в месяце
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        
+        const daysGrid = document.getElementById('daysGrid');
+        daysGrid.innerHTML = '';
+
+        // Пустые ячейки перед первым днём
+        for (let i = 0; i < startDay; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'day empty';
+            daysGrid.appendChild(emptyDiv);
+        }
+
+        // Дни месяца
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'day';
+            dayDiv.textContent = day;
+            
+            // Проверка на сегодняшний день
+            const today = new Date(2026, 9, 3); // Фиксируем "сегодня" для примера
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dayDiv.classList.add('today');
+            }
+
+            // Клик по дню
+            dayDiv.addEventListener('click', () => {
+                document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                dayDiv.classList.add('selected');
+            });
+
+            daysGrid.appendChild(dayDiv);
+        }
+    }
+
+    // Переключение месяцев
+    document.getElementById('prevMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
+    document.getElementById('nextMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
+
+    // Смена темы
+    function changeTheme(themeClass) {
+        const container = document.getElementById('calendar');
+        container.className = 'calendar-container ' + themeClass;
+    }
+
+    // Первый рендер
+    renderCalendar();
+</script>
+
+</body>
+</html>
