@@ -7,8 +7,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 8px;
-            width: 220px;
+            padding: 7px;
+            width: 190px; /* уменьшили с 220px */
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             user-select: none;
             color: #333;
@@ -19,16 +19,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: bold;
-            font-size: 13px;
-            gap: 4px; /* расстояние между стрелкой, названием и стрелкой */
+            font-size: 12px;
+            gap: 3px;
         }
         .calendar-header button {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
             padding: 0 2px;
         }
@@ -37,7 +37,7 @@
         }
         .month-year {
             cursor: pointer;
-            padding: 2px 6px;
+            padding: 2px 5px;
             border-radius: 4px;
             transition: background 0.2s;
         }
@@ -47,17 +47,17 @@
         /* Выпадающий список для выбора месяца/года */
         .picker {
             position: absolute;
-            top: 30px;
+            top: 28px;
             left: 50%;
             transform: translateX(-50%);
             background: #fff;
             border: 1px solid #ddd;
             border-radius: 6px;
-            padding: 8px;
+            padding: 7px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 10;
             display: none;
-            width: 190px;
+            width: 170px;
         }
         .picker.active {
             display: block;
@@ -66,15 +66,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
         .picker-row button {
             background: #f0f0f0;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            padding: 2px 8px;
-            font-size: 12px;
+            padding: 2px 7px;
+            font-size: 11px;
         }
         .picker-row button:hover {
             background: #e0e0e0;
@@ -89,8 +89,8 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            padding: 4px 0;
-            font-size: 11px;
+            padding: 3px 0;
+            font-size: 10px;
             transition: background 0.2s;
         }
         .picker-months button:hover {
@@ -105,9 +105,9 @@
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 9px;
             color: #888;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
         .days {
             display: grid;
@@ -116,8 +116,8 @@
             gap: 1px;
         }
         .day {
-            padding: 4px 0;
-            font-size: 12px;
+            padding: 3px 0;
+            font-size: 11px;
             border-radius: 50%;
             cursor: pointer;
             transition: background 0.2s, color 0.2s;
@@ -143,6 +143,13 @@
         .theme-green { background: #f0fff4; }
         .theme-pink { background: #fff0f5; }
         .theme-yellow { background: #fffff0; }
+        /* Блок с кругами цветов — выравниваем по левому краю */
+        .theme-dots {
+            margin-top: 5px;
+            display: flex;
+            gap: 3px;
+            padding-left: 2px; /* выравнивание под первую колонку дней */
+        }
     </style>
 </head>
 <body>
@@ -150,7 +157,7 @@
 <div class="calendar-container theme-blue" id="calendar">
     <div class="calendar-header">
         <button id="prevMonth">◀</button>
-        <span class="month-year" id="monthYear">Июнь 2026</span>
+        <span class="month-year" id="monthYear">Ноябрь 2026</span>
         <button id="nextMonth">▶</button>
     </div>
 
@@ -169,18 +176,16 @@
     </div>
     <div class="days" id="daysGrid"></div>
 
-    <div style="margin-top: 6px; display: flex; justify-content: flex-start; align-items: center;">
-        <div style="display: flex; gap: 3px;">
-            <button onclick="changeTheme('theme-blue')" style="background:#007bff; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
-            <button onclick="changeTheme('theme-green')" style="background:#28a745; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
-            <button onclick="changeTheme('theme-pink')" style="background:#e83e8c; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
-            <button onclick="changeTheme('theme-yellow')" style="background:#ffc107; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
-        </div>
+    <div class="theme-dots">
+        <button onclick="changeTheme('theme-blue')" style="background:#007bff; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
+        <button onclick="changeTheme('theme-green')" style="background:#28a745; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
+        <button onclick="changeTheme('theme-pink')" style="background:#e83e8c; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
+        <button onclick="changeTheme('theme-yellow')" style="background:#ffc107; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
     </div>
 </div>
 
 <script>
-    let currentDate = new Date(2026, 5, 3); // Июнь 2026
+    let currentDate = new Date(2026, 10, 1); // Ноябрь 2026
     const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
     const shortMonthNames = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
 
@@ -209,7 +214,7 @@
             dayDiv.className = 'day';
             dayDiv.textContent = day;
             
-            const today = new Date(2026, 5, 3);
+            const today = new Date(2026, 10, 1);
             if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 dayDiv.classList.add('today');
             }
@@ -222,13 +227,11 @@
             daysGrid.appendChild(dayDiv);
         }
 
-        // Обновляем активный месяц в списке
         document.querySelectorAll('.picker-months button').forEach((btn, i) => {
             btn.classList.toggle('active', i === month);
         });
     }
 
-    // Генерация кнопок месяцев
     function buildMonthPicker() {
         const container = document.getElementById('pickerMonths');
         container.innerHTML = '';
@@ -244,9 +247,6 @@
         });
     }
 
-    function openPicker() {
-        document.getElementById('picker').classList.add('active');
-    }
     function closePicker() {
         document.getElementById('picker').classList.remove('active');
     }
@@ -257,7 +257,6 @@
         picker.classList.toggle('active');
     });
 
-    // Закрытие списка при клике вне
     document.addEventListener('click', (e) => {
         if (!e.target.closest('#picker') && !e.target.closest('#monthYear')) {
             closePicker();
@@ -273,7 +272,6 @@
         renderCalendar();
     });
 
-    // Быстрый выбор года
     document.getElementById('prevYear').addEventListener('click', () => {
         currentDate.setFullYear(currentDate.getFullYear() - 1);
         renderCalendar();
