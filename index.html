@@ -8,7 +8,7 @@
             background: #f8f9fa;
             border-radius: 8px;
             padding: 7px;
-            width: 190px; /* уменьшили с 220px */
+            width: 190px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             user-select: none;
             color: #333;
@@ -32,19 +32,14 @@
             color: #666;
             padding: 0 2px;
         }
-        .calendar-header button:hover {
-            color: #000;
-        }
+        .calendar-header button:hover { color: #000; }
         .month-year {
             cursor: pointer;
             padding: 2px 5px;
             border-radius: 4px;
             transition: background 0.2s;
         }
-        .month-year:hover {
-            background: #e0e0e0;
-        }
-        /* Выпадающий список для выбора месяца/года */
+        .month-year:hover { background: #e0e0e0; }
         .picker {
             position: absolute;
             top: 28px;
@@ -59,9 +54,7 @@
             display: none;
             width: 170px;
         }
-        .picker.active {
-            display: block;
-        }
+        .picker.active { display: block; }
         .picker-row {
             display: flex;
             justify-content: space-between;
@@ -76,9 +69,7 @@
             padding: 2px 7px;
             font-size: 11px;
         }
-        .picker-row button:hover {
-            background: #e0e0e0;
-        }
+        .picker-row button:hover { background: #e0e0e0; }
         .picker-months {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -93,13 +84,8 @@
             font-size: 10px;
             transition: background 0.2s;
         }
-        .picker-months button:hover {
-            background: #e0e0e0;
-        }
-        .picker-months button.active {
-            background: #007bff;
-            color: white;
-        }
+        .picker-months button:hover { background: #e0e0e0; }
+        .picker-months button.active { background: #007bff; color: white; }
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -122,33 +108,19 @@
             cursor: pointer;
             transition: background 0.2s, color 0.2s;
         }
-        .day:hover {
-            background: #e0e0e0;
-        }
-        .day.empty {
-            cursor: default;
-            color: transparent;
-        }
-        .day.today {
-            background: #007bff;
-            color: white;
-            font-weight: bold;
-        }
-        .day.selected {
-            background: #0056b3;
-            color: white;
-        }
-        /* Цветовые темы */
+        .day:hover { background: #e0e0e0; }
+        .day.empty { cursor: default; color: transparent; }
+        .day.today { background: #007bff; color: white; font-weight: bold; }
+        .day.selected { background: #0056b3; color: white; }
         .theme-blue { background: #f0f7ff; }
         .theme-green { background: #f0fff4; }
         .theme-pink { background: #fff0f5; }
         .theme-yellow { background: #fffff0; }
-        /* Блок с кругами цветов — выравниваем по левому краю */
         .theme-dots {
             margin-top: 5px;
             display: flex;
             gap: 3px;
-            padding-left: 2px; /* выравнивание под первую колонку дней */
+            padding-left: 0px; /* ВАРИАНТ 1 */
         }
     </style>
 </head>
@@ -157,11 +129,9 @@
 <div class="calendar-container theme-blue" id="calendar">
     <div class="calendar-header">
         <button id="prevMonth">◀</button>
-        <span class="month-year" id="monthYear">Ноябрь 2026</span>
+        <span class="month-year" id="monthYear">Октябрь 2026</span>
         <button id="nextMonth">▶</button>
     </div>
-
-    <!-- Выпадающий список выбора месяца/года -->
     <div class="picker" id="picker">
         <div class="picker-row">
             <button id="prevYear">− год</button>
@@ -170,12 +140,10 @@
         </div>
         <div class="picker-months" id="pickerMonths"></div>
     </div>
-
     <div class="weekdays">
         <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
     </div>
     <div class="days" id="daysGrid"></div>
-
     <div class="theme-dots">
         <button onclick="changeTheme('theme-blue')" style="background:#007bff; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
         <button onclick="changeTheme('theme-green')" style="background:#28a745; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
@@ -185,48 +153,39 @@
 </div>
 
 <script>
-    let currentDate = new Date(2026, 10, 1); // Ноябрь 2026
+    let currentDate = new Date(2026, 9, 1);
     const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
     const shortMonthNames = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
 
     function renderCalendar() {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
-        
         document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
         document.getElementById('pickerYear').textContent = year;
-
         const firstDay = new Date(year, month, 1).getDay();
         const startDay = (firstDay === 0) ? 6 : firstDay - 1;
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        
         const daysGrid = document.getElementById('daysGrid');
         daysGrid.innerHTML = '';
-
         for (let i = 0; i < startDay; i++) {
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'day empty';
             daysGrid.appendChild(emptyDiv);
         }
-
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement('div');
             dayDiv.className = 'day';
             dayDiv.textContent = day;
-            
-            const today = new Date(2026, 10, 1);
+            const today = new Date(2026, 9, 1);
             if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 dayDiv.classList.add('today');
             }
-
             dayDiv.addEventListener('click', () => {
                 document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
                 dayDiv.classList.add('selected');
             });
-
             daysGrid.appendChild(dayDiv);
         }
-
         document.querySelectorAll('.picker-months button').forEach((btn, i) => {
             btn.classList.toggle('active', i === month);
         });
@@ -247,48 +206,26 @@
         });
     }
 
-    function closePicker() {
-        document.getElementById('picker').classList.remove('active');
-    }
+    function closePicker() { document.getElementById('picker').classList.remove('active'); }
 
     document.getElementById('monthYear').addEventListener('click', (e) => {
         e.stopPropagation();
-        const picker = document.getElementById('picker');
-        picker.classList.toggle('active');
+        document.getElementById('picker').classList.toggle('active');
     });
 
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('#picker') && !e.target.closest('#monthYear')) {
-            closePicker();
-        }
+        if (!e.target.closest('#picker') && !e.target.closest('#monthYear')) closePicker();
     });
 
-    document.getElementById('prevMonth').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
-    });
-    document.getElementById('nextMonth').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
-    });
-
-    document.getElementById('prevYear').addEventListener('click', () => {
-        currentDate.setFullYear(currentDate.getFullYear() - 1);
-        renderCalendar();
-    });
-    document.getElementById('nextYear').addEventListener('click', () => {
-        currentDate.setFullYear(currentDate.getFullYear() + 1);
-        renderCalendar();
-    });
-
+    document.getElementById('prevMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+    document.getElementById('nextMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+    document.getElementById('prevYear').addEventListener('click', () => { currentDate.setFullYear(currentDate.getFullYear() - 1); renderCalendar(); });
+    document.getElementById('nextYear').addEventListener('click', () => { currentDate.setFullYear(currentDate.getFullYear() + 1); renderCalendar(); });
     function changeTheme(themeClass) {
-        const container = document.getElementById('calendar');
-        container.className = 'calendar-container ' + themeClass;
+        document.getElementById('calendar').className = 'calendar-container ' + themeClass;
     }
-
     buildMonthPicker();
     renderCalendar();
 </script>
-
 </body>
 </html>
