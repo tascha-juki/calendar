@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Цветовые переменные по умолчанию (синяя тема) */
         :root {
             --accent-color: #4a90e2;
             --accent-dark: #357abd;
         }
 
-        /* Изящные цвета для каждой темы */
         .theme-blue {
             background: #f4f8fd;
             --accent-color: #4a90e2;
@@ -43,7 +41,6 @@
             position: relative;
         }
 
-        /* Плавные переходы для всех элементов */
         .calendar-container * {
             transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
         }
@@ -156,7 +153,6 @@
             border: 1.5px solid transparent;
         }
 
-        /* Hover — белый фон */
         .day:hover {
             background: #ffffff;
         }
@@ -169,7 +165,6 @@
             background: transparent;
         }
 
-        /* Сегодня — заливка цветом темы */
         .day.today {
             background: var(--accent-color);
             color: white;
@@ -177,7 +172,6 @@
             border: 1.5px solid var(--accent-color);
         }
 
-        /* Выбранный день — белый фон с обводкой цветом темы */
         .day.selected {
             background: #ffffff;
             color: var(--accent-color);
@@ -233,15 +227,21 @@
 </div>
 
 <script>
-    // Стартовый месяц — текущий
-    let currentDate = new Date();
-
     const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
     const shortMonthNames = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
 
+    // Текущая отображаемая дата (месяц/год на экране)
+    let viewDate = new Date();
+
     function renderCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
+        // Всегда берём актуальную дату в момент отрисовки
+        const now = new Date();
+        const todayDay = now.getDate();
+        const todayMonth = now.getMonth();
+        const todayYear = now.getFullYear();
+
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
 
         document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
         document.getElementById('pickerYear').textContent = year;
@@ -253,26 +253,22 @@
         const daysGrid = document.getElementById('daysGrid');
         daysGrid.innerHTML = '';
 
-        // Пустые ячейки до первого дня месяца
         for (let i = 0; i < startDay; i++) {
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'day empty';
             daysGrid.appendChild(emptyDiv);
         }
 
-        // Реальная текущая дата
-        const today = new Date();
-
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement('div');
             dayDiv.className = 'day';
             dayDiv.textContent = day;
 
-            // Подсветка сегодняшнего дня
+            // Подсвечиваем "сегодня" только если отображается текущий месяц и год
             if (
-                day === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear()
+                day === todayDay &&
+                month === todayMonth &&
+                year === todayYear
             ) {
                 dayDiv.classList.add('today');
             }
@@ -297,7 +293,7 @@
             const btn = document.createElement('button');
             btn.textContent = name;
             btn.addEventListener('click', () => {
-                currentDate.setMonth(i);
+                viewDate.setMonth(i);
                 renderCalendar();
                 closePicker();
             });
@@ -321,19 +317,19 @@
     });
 
     document.getElementById('prevMonth').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
+        viewDate.setMonth(viewDate.getMonth() - 1);
         renderCalendar();
     });
     document.getElementById('nextMonth').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
+        viewDate.setMonth(viewDate.getMonth() + 1);
         renderCalendar();
     });
     document.getElementById('prevYear').addEventListener('click', () => {
-        currentDate.setFullYear(currentDate.getFullYear() - 1);
+        viewDate.setFullYear(viewDate.getFullYear() - 1);
         renderCalendar();
     });
     document.getElementById('nextYear').addEventListener('click', () => {
-        currentDate.setFullYear(currentDate.getFullYear() + 1);
+        viewDate.setFullYear(viewDate.getFullYear() + 1);
         renderCalendar();
     });
 
