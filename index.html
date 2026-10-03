@@ -7,8 +7,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 10px;
-            width: 270px; /* Можно менять ширину */
+            padding: 8px;
+            width: 220px; /* Можно менять ширину */
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             user-select: none;
             color: #333;
@@ -18,17 +18,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
+            padding: 0 6px; /* отступы слева и справа */
         }
         .calendar-header button {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             color: #666;
-            padding: 0 6px;
+            padding: 0 4px;
+            margin: 0 4px; /* дополнительный отступ от края */
         }
         .calendar-header button:hover {
             color: #000;
@@ -38,19 +40,19 @@
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 10px;
             color: #888;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         .days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
-            gap: 2px;
+            gap: 1px;
         }
         .day {
-            padding: 5px 0;
-            font-size: 13px;
+            padding: 4px 0;
+            font-size: 12px;
             border-radius: 50%;
             cursor: pointer;
             transition: background 0.2s, color 0.2s;
@@ -90,19 +92,19 @@
         <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
     </div>
     <div class="days" id="daysGrid"></div>
-    <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; gap: 4px;">
-            <button onclick="changeTheme('theme-blue')" style="background:#007bff; border:none; width:14px; height:14px; border-radius:50%; cursor:pointer;"></button>
-            <button onclick="changeTheme('theme-green')" style="background:#28a745; border:none; width:14px; height:14px; border-radius:50%; cursor:pointer;"></button>
-            <button onclick="changeTheme('theme-pink')" style="background:#e83e8c; border:none; width:14px; height:14px; border-radius:50%; cursor:pointer;"></button>
-            <button onclick="changeTheme('theme-yellow')" style="background:#ffc107; border:none; width:14px; height:14px; border-radius:50%; cursor:pointer;"></button>
+    <div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 3px;">
+            <button onclick="changeTheme('theme-blue')" style="background:#007bff; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
+            <button onclick="changeTheme('theme-green')" style="background:#28a745; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
+            <button onclick="changeTheme('theme-pink')" style="background:#e83e8c; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
+            <button onclick="changeTheme('theme-yellow')" style="background:#ffc107; border:none; width:12px; height:12px; border-radius:50%; cursor:pointer;"></button>
         </div>
-        <span style="font-size: 11px; color: #aaa;">Buildin.AI</span>
+        <span style="font-size: 10px; color: #aaa;">Buildin.AI</span>
     </div>
 </div>
 
 <script>
-    let currentDate = new Date(2026, 9, 3);
+    let currentDate = new Date(2026, 5, 3); // Июнь 2026
 
     function renderCalendar() {
         const year = currentDate.getFullYear();
@@ -129,7 +131,7 @@
             dayDiv.className = 'day';
             dayDiv.textContent = day;
             
-            const today = new Date(2026, 9, 3);
+            const today = new Date(2026, 5, 3);
             if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 dayDiv.classList.add('today');
             }
