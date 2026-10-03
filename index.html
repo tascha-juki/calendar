@@ -169,18 +169,19 @@
             background: transparent;
         }
 
-        /* Сегодня — обводка цветом темы */
+        /* Сегодня — заливка цветом темы */
         .day.today {
-            background: transparent;
-            color: var(--accent-color);
+            background: var(--accent-color);
+            color: white;
             font-weight: bold;
             border: 1.5px solid var(--accent-color);
         }
 
-        /* Выбранный день — заливка цветом темы */
+        /* Выбранный день — белый фон с обводкой цветом темы */
         .day.selected {
-            background: var(--accent-color);
-            color: white;
+            background: #ffffff;
+            color: var(--accent-color);
+            font-weight: bold;
             border: 1.5px solid var(--accent-color);
         }
 
